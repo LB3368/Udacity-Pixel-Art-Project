@@ -1,3 +1,55 @@
+let grid = document.getElementById('grid');
+let currentColor;
+
+function makingGrid(gridNumber) {
+    const fragment = document.createDocumentFragment();
+    for (let i = 1; i <= gridNumber; i++) {
+        const iElem = document.createElement('div');
+        iElem.classList.add('box');
+        iElem.dataset.boxNumber = i;
+        fragment.appendChild(iElem);
+    }
+    grid.appendChild(fragment);
+}
+
+makingGrid(70);
+
+let boxes = document.querySelectorAll('.box');
+boxes.forEach((box, index) => {
+    box.addEventListener('click', (e) => getBoxes(e, box, boxes.length));
+    if (index >= boxes.length - 7) {
+        box.style.backgroundColor = generateRandomColor();
+    }
+})
+
+function generateRandomColor() {
+    let maxVal = 0xffffff;
+    let randomNumber = Math.random() * maxVal;
+    randomNumber = Math.floor(randomNumber);
+    randomNumber = randomNumber.toString(16);
+    let randColor = randomNumber.padStart(6, 0);
+    return `#${randColor.toUpperCase()}`;
+}
+
+function getBoxes(e, box, size) {
+    let boxNumber = e.target.dataset.boxNumber;
+    if (boxNumber < size - 7) {
+        if (currentColor) {
+            box.style.backgroundColor = currentColor;
+        } else {
+            console.log('no color is active');
+        }
+    }else {
+        currentColor = box.style.backgroundColor;
+        console.log('New Background added', currentColor);
+    }
+}
+
+
+
+
+
+
 "use strict";
 
 const $tableElement = $('#pixelCanvas');
@@ -33,3 +85,5 @@ function addCellClickListener() {
         $(event.currentTarget).css("background-color", color)
     });
 };
+
+
